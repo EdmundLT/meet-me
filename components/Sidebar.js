@@ -8,8 +8,10 @@ import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Chat from "./Chat";
+import { useRouter } from "next/router";
 function Sidebar() {
   const [user] = useAuthState(auth);
+  const router = useRouter();
   const userChatRef = db
     .collection("chats")
     .where("users", "array-contains", user.email);
@@ -36,11 +38,15 @@ function Sidebar() {
       (chat) =>
         chat.data().users.find((user) => user === recipientEmail)?.length > 0
     );
-
+    
+  const signOut = () => {
+    router.push('/')
+    auth.signOut()
+  }
   return (
     <Container>
       <Header>
-        <UserAvater src={user.photoURL} onClick={() => auth.signOut()} />
+        <UserAvater src={user.photoURL} onClick={signOut} />
         <IconsContainer>
           <IconButton>
             <ChatIcon />
