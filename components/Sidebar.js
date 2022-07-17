@@ -40,7 +40,6 @@ function Sidebar() {
     );
     
   const signOut = () => {
-    router.push('/')
     auth.signOut()
   }
   return (
